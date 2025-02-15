@@ -1,9 +1,11 @@
-import { Configuration, UsersControllerApi } from "../openapi";
+import { Configuration, ChartControllerApi, BiUserControllerApi } from "../openapi";
 
 const configuration = new Configuration({
   basePath: "http://localhost:5173/api",
 });
 
-const usersControllerApi = new UsersControllerApi(configuration);
+const chartControllerApi = new ChartControllerApi(configuration);
 
-export { usersControllerApi };
+const biUserControllerApi = new BiUserControllerApi(configuration);
+
+export { chartControllerApi, biUserControllerApi };

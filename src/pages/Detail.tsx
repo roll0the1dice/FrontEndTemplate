@@ -1,19 +1,19 @@
 import { Button, Descriptions } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { usersControllerApi } from "../services/request";
 import { useParams } from "react-router";
-import { Users } from "../openapi";
 import { AuthContext } from "../components/AuthProvider";
+import { BiUser } from "../openapi";
+import { biUserControllerApi } from "../services/request";
 
 export default function Detail() {
   const { id } = useParams();
-  const [userDetail, setUserDetail] = useState<Users>({} as Users);
+  const [userDetail, setUserDetail] = useState<BiUser>({} as BiUser);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await usersControllerApi.one(Number(id));
+        const res = await biUserControllerApi.one1(Number(id));
         const { statusCodeValue, data }: any = res.data;
         console.log(statusCodeValue, data);
         if (statusCodeValue == 200) {
@@ -28,7 +28,7 @@ export default function Detail() {
   const handleClick = () => {
     (async () => {
       try {
-        const res = await usersControllerApi.userLogout();
+        const res = await biUserControllerApi.userLogout();
         const { statusCodeValue, data }: any = res.data;
         console.log(statusCodeValue, data);
         if (statusCodeValue == 200) {
@@ -42,16 +42,16 @@ export default function Detail() {
 
   return (
     <Descriptions title="User Info">
-      <Descriptions.Item label="UserName">
-        {userDetail.username}
+      <Descriptions.Item label="UserAccount">
+        {userDetail.userAccount}
       </Descriptions.Item>
-      <Descriptions.Item label="email">{userDetail.email}</Descriptions.Item>
-      <Descriptions.Item label="avatar">{userDetail.avatar}</Descriptions.Item>
+      <Descriptions.Item label="userName">{userDetail.userName}</Descriptions.Item>
+      <Descriptions.Item label="userRole">{userDetail.userRole}</Descriptions.Item>
       <Descriptions.Item label="createdAt">
-        {userDetail.createdAt}
+        {userDetail.createTime}
       </Descriptions.Item>
       <Descriptions.Item label="updatedAt">
-        {userDetail.updatedAt}
+        {userDetail.updateTime}
       </Descriptions.Item>
       {Number(id) === Number(user.id) && (
         <Descriptions.Item label="logout">

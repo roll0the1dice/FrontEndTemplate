@@ -3,8 +3,8 @@ import { Form, Input, Button, message, Tabs } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams  } from 'react-router'; // 假设你使用了 React Router
 import { AuthContext } from '../components/AuthProvider';
-import { UsersLoginRequest } from '../openapi';
-import { usersControllerApi } from '../services/request';
+import { biUserControllerApi } from '../services/request';
+import { UserLoginRequestDTO } from '../openapi';
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -14,13 +14,13 @@ const LoginPage = () => {
   const { setLoading, setUser } = useContext(AuthContext);
 
   const onFinish = async (values: any) => {
-    const appUserLoginRequest: UsersLoginRequest = {
-      "username": values.username,
-      "password": values.password,
+    const appUserLoginRequest: UserLoginRequestDTO = {
+      "userAccount": values.username,
+      "userPassword": values.password,
     };
    
     try {
-      let res = await usersControllerApi.userLogin(appUserLoginRequest);
+      let res = await biUserControllerApi.userLogin(appUserLoginRequest);
       const {statusCodeValue, data}: any = res.data;
       console.log(statusCodeValue, data);
       if (statusCodeValue == 200) {

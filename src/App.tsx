@@ -37,9 +37,8 @@ function App() {
     <Layout>
       <Header style={headerStyle}>
         <Link to="/" style={{marginLeft: 20}}>Home</Link>
+        <Link to="/add_chart" style={{marginLeft: 20}}>addChart</Link>
         <Link to={`/detail/${user.id}`} style={{marginLeft: 20}}>UserInfo</Link>
-        {/* <Link to="/login" style={{marginLeft: 20}}>Login</Link>
-        <Link to="/register" style={{marginLeft: 20}}>Register</Link> */}
       </Header>
       <Content>
         <AppRoutes />

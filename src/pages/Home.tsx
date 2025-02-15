@@ -3,11 +3,11 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { ProTable, TableDropdown } from "@ant-design/pro-components";
 import { Button, Dropdown, Space, Tag } from "antd";
 import { useRef, useState } from "react";
-import { Users } from "../openapi";
 import { Link } from "react-router";
 import UpdatedForm from "../components/UpdatedForm";
 import CreatedForm from "../components/CreatedForm";
-import { usersControllerApi } from "../services/request";
+import { BiUser } from "../openapi";
+import { biUserControllerApi } from "../services/request";
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -24,8 +24,8 @@ const Home = () => {
   const actionRef = useRef<ActionType>(null);
   const [isCreatedModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdatedModalOpen, setIsUpdatedModalOpen] = useState(false);
-  const [record, setRecord] = useState<Users>({} as Users);
-  const [rows, setRows] = useState<Users[]>([]);
+  const [record, setRecord] = useState<BiUser>({} as BiUser);
+  const [rows, setRows] = useState<BiUser[]>([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const PageSize = 5;
@@ -42,7 +42,7 @@ const Home = () => {
     setIsCreateModalOpen(false);
   };
 
-  const showUpdatedModal = (record: Users) => {
+  const showUpdatedModal = (record: BiUser) => {
     setIsUpdatedModalOpen(true);
     setRecord(record);
   };
@@ -55,15 +55,15 @@ const Home = () => {
     setIsUpdatedModalOpen(false);
   };
 
-  const columns: ProColumns<Users>[] = [
+  const columns: ProColumns<BiUser>[] = [
     {
       dataIndex: "index",
       valueType: "indexBorder",
       width: 48,
     },
     {
-      title: "用户名",
-      dataIndex: "username",
+      title: "用户账号",
+      dataIndex: "userAccount",
       copyable: true,
       formItemProps: {
         rules: [
@@ -75,24 +75,20 @@ const Home = () => {
       },
     },
     {
-      title: "邮箱",
-      dataIndex: "email",
+      title: "用户名",
+      dataIndex: "userName",
       copyable: true,
     },
     {
-      title: "头像链接",
-      dataIndex: "avatar",
-    },
-    {
       title: "创建时间",
-      dataIndex: "createdAt",
+      dataIndex: "createTime",
       valueType: "date",
       sorter: true,
       hideInSearch: true,
     },
     {
       title: "更新时间",
-      dataIndex: "updatedAt",
+      dataIndex: "updateTime",
       valueType: "date",
     },
     {
@@ -110,13 +106,13 @@ const Home = () => {
   ];
 
   return (
-    <ProTable<Users>
+    <ProTable<BiUser>
       columns={columns}
       actionRef={actionRef}
       cardBordered
       request={async (params, sort, filter) => {
         //console.log(sort, filter);
-        let res = await usersControllerApi.all();
+        let res = await biUserControllerApi.all1();
         const { statusCodeValue, data }: any = res.data;
         if (statusCodeValue === 200) {
           //console.log("data", data.content);
