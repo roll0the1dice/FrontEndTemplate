@@ -37,7 +37,8 @@ function App() {
     <Layout>
       <Header style={headerStyle}>
         <Link to="/" style={{marginLeft: 20}}>Home</Link>
-        <Link to="/add_chart" style={{marginLeft: 20}}>addChart</Link>
+        <Link to="/add_chart" style={{marginLeft: 20}}>ChartAnalysis</Link>
+        <Link to="/my_chart" style={{marginLeft: 20}}>MyChart</Link>
         <Link to={`/detail/${user.id}`} style={{marginLeft: 20}}>UserInfo</Link>
       </Header>
       <Content>

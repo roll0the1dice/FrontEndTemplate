@@ -151,27 +151,52 @@ export interface ApiResponseCustomPageImplChart {
 /**
  * 
  * @export
- * @interface ApiResponseString
+ * @interface ApiResponseCustomPageImplQueryChartVO
  */
-export interface ApiResponseString {
+export interface ApiResponseCustomPageImplQueryChartVO {
     /**
      * 
      * @type {number}
-     * @memberof ApiResponseString
+     * @memberof ApiResponseCustomPageImplQueryChartVO
      */
     'statusCodeValue'?: number;
     /**
      * 
      * @type {string}
-     * @memberof ApiResponseString
+     * @memberof ApiResponseCustomPageImplQueryChartVO
      */
     'statusCode'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof ApiResponseString
+     * @type {CustomPageImplQueryChartVO}
+     * @memberof ApiResponseCustomPageImplQueryChartVO
      */
-    'data'?: string;
+    'data'?: CustomPageImplQueryChartVO;
+}
+/**
+ * 
+ * @export
+ * @interface ApiResponseGenChartByAiResult
+ */
+export interface ApiResponseGenChartByAiResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof ApiResponseGenChartByAiResult
+     */
+    'statusCodeValue'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ApiResponseGenChartByAiResult
+     */
+    'statusCode'?: string;
+    /**
+     * 
+     * @type {GenChartByAiResult}
+     * @memberof ApiResponseGenChartByAiResult
+     */
+    'data'?: GenChartByAiResult;
 }
 /**
  * 
@@ -264,18 +289,6 @@ export interface Chart {
      * @memberof Chart
      */
     'chartType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Chart
-     */
-    'genChart'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Chart
-     */
-    'genResult'?: string;
     /**
      * 
      * @type {number}
@@ -456,6 +469,104 @@ export interface CustomPageImplChart {
 /**
  * 
  * @export
+ * @interface CustomPageImplQueryChartVO
+ */
+export interface CustomPageImplQueryChartVO {
+    /**
+     * 
+     * @type {Array<QueryChartVO>}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'content'?: Array<QueryChartVO>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'number'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'totalElements'?: number;
+    /**
+     * 
+     * @type {PageableObject}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'pageable'?: PageableObject;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'last'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {SortObject}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'sort'?: SortObject;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'numberOfElements'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'first'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CustomPageImplQueryChartVO
+     */
+    'empty'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface GenChartByAiResult
+ */
+export interface GenChartByAiResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof GenChartByAiResult
+     */
+    'genChart'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GenChartByAiResult
+     */
+    'genResult'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GenChartByAiResult
+     */
+    'chartId'?: number;
+}
+/**
+ * 
+ * @export
  * @interface PageableObject
  */
 export interface PageableObject {
@@ -495,6 +606,61 @@ export interface PageableObject {
      * @memberof PageableObject
      */
     'unpaged'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface QueryChartVO
+ */
+export interface QueryChartVO {
+    /**
+     * 
+     * @type {number}
+     * @memberof QueryChartVO
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'goal'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'chartData'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'chartType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'createTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'genChart'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'genResult'?: string;
 }
 /**
  * 
@@ -1322,6 +1488,45 @@ export const ChartControllerApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listChart: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/chart/listChart`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1448,10 +1653,23 @@ export const ChartControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseString>> {
+        async genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseGenChartByAiResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.genChartByAi(name, goal, multipartFile, chartType, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ChartControllerApi.genChartByAi']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listChart(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseCustomPageImplQueryChartVO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listChart(page, size, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChartControllerApi.listChart']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1526,8 +1744,18 @@ export const ChartControllerApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseString> {
+        genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseGenChartByAiResult> {
             return localVarFp.genChartByAi(name, goal, multipartFile, chartType, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listChart(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseCustomPageImplQueryChartVO> {
+            return localVarFp.listChart(page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1604,6 +1832,18 @@ export class ChartControllerApi extends BaseAPI {
      */
     public genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig) {
         return ChartControllerApiFp(this.configuration).genChartByAi(name, goal, multipartFile, chartType, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [page] 
+     * @param {number} [size] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChartControllerApi
+     */
+    public listChart(page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return ChartControllerApiFp(this.configuration).listChart(page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
