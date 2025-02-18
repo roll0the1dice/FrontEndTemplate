@@ -51,7 +51,8 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         console.log(statusCodeValue, data);
         if (statusCodeValue == 200) {
           setIsLogin(data);
-          readUserInfoFromLocalStorage();
+          if (data == true) readUserInfoFromLocalStorage();
+          else localStorage.removeItem("saTokenInfo");
         }
       } catch (error) {
         console.log(error);
@@ -61,6 +62,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    //if (!isLogin) localStorage.removeItem("saTokenInfo");
 
     const validResult = readUserInfoFromLocalStorage();
 
