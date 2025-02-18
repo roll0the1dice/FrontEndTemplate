@@ -11,8 +11,8 @@ import {
 } from "@ant-design/pro-components";
 import { Button, Form, message, Modal } from "antd";
 import { use, useContext, useEffect, useState } from "react";
-import { Users } from "../openapi";
 import { AuthContext } from "./AuthProvider";
+import { BiUser } from "../openapi";
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -24,12 +24,12 @@ const waitTime = (time: number = 100) => {
 
 const CreatedForm = (props: any) => {
   const [form] = Form.useForm<{ name: string; company: string }>();
-  const [column, setColumn] = useState<ProColumns<Users>[]>([]);
+  const [column, setColumn] = useState<ProColumns<BiUser>[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
   const { user } = useContext(AuthContext);
 
 
-  const handleSubmit = (record: Users) => {
+  const handleSubmit = (record: BiUser) => {
     console.log('record', record, 'user', user);
     props.handleOk();
   }
