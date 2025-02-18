@@ -3,31 +3,30 @@ import { Form, Input, Button, message, Tabs } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams  } from 'react-router'; // 假设你使用了 React Router
 import { AuthContext } from '../components/AuthProvider';
-import { UsersLoginRequest } from '../openapi';
 import { usersControllerApi } from '../services/request';
+import { ApiResponseSaTokenInfo, SaTokenInfo } from '../openapi';
 
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [messageApi, contextHolder] = message.useMessage();
-  const { setLoading, setUser } = useContext(AuthContext);
+  const { setIsLogin, setSaTokenInfo } = useContext(AuthContext);
 
   const onFinish = async (values: any) => {
-    const appUserLoginRequest: UsersLoginRequest = {
-      "username": values.username,
-      "password": values.password,
-    };
    
     try {
-      let res = await usersControllerApi.userLogin(appUserLoginRequest);
-      const {statusCodeValue, data}: any = res.data;
+      let res = await usersControllerApi.doLogin(values.username, values.password);
+      const {statusCodeValue, data}: ApiResponseSaTokenInfo = res.data;
       console.log(statusCodeValue, data);
       if (statusCodeValue == 200) {
-        setLoading(true);
-        setUser(data);
+        if (data === undefined)
+            throw new Error("data is contaninated!");
+
+        setIsLogin(true);
+        setSaTokenInfo(data);
         messageApi.success('Login successful!');
-        localStorage.setItem('user', JSON.stringify(data));
+        localStorage.setItem('saTokenInfo', JSON.stringify(data));
         const redirectUrl = (searchParams.get("redirect") as string) ?? "/";
         const baseUrl = window.location.origin;
         const path = redirectUrl.replace(baseUrl, "");

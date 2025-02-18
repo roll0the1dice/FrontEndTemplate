@@ -26,7 +26,7 @@ const footerStyle: React.CSSProperties = {
 
 function App() {
   let navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { saTokenInfo } = useContext(AuthContext);
 
   const onChange = (key: string) => {
     if (key == "home") navigate(`/`);
@@ -37,7 +37,7 @@ function App() {
     <Layout>
       <Header style={headerStyle}>
         <Link to="/" style={{marginLeft: 20}}>Home</Link>
-        <Link to={`/detail/${user.id}`} style={{marginLeft: 20}}>UserInfo</Link>
+        <Link to={`/detail/0`} style={{marginLeft: 20}}>UserInfo</Link>
         {/* <Link to="/login" style={{marginLeft: 20}}>Login</Link>
         <Link to="/register" style={{marginLeft: 20}}>Register</Link> */}
       </Header>

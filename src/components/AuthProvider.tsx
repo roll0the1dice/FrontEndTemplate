@@ -7,13 +7,14 @@ import React, {
   Dispatch,
 } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { Users } from "../openapi";
+import { SaTokenInfo, Users } from "../openapi";
+import { usersControllerApi } from "../services/request";
 
 interface ContextType {
-  loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-  user: Users;
-  setUser: Dispatch<SetStateAction<Users>>;
+  isLogin: boolean;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
+  saTokenInfo: SaTokenInfo;
+  setSaTokenInfo: Dispatch<SetStateAction<SaTokenInfo>>;
 }
 
 // 创建 AuthContext
@@ -25,29 +26,62 @@ interface Props {
 
 // 创建 AuthProvider 组件
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = useState({} as Users); // null 表示未登录
-  const [loading, setLoading] = useState(false); // 初始化为 loading
+  const [saTokenInfo, setSaTokenInfo] = useState({} as SaTokenInfo); // null 表示未登录
+  const [isLogin, setIsLogin] = useState(false); // 初始化为 loading
   const navigate = useNavigate();
   const location = useLocation();
 
   const readUserInfoFromLocalStorage = () => {
-    if (localStorage.getItem("user")) {
-      const _user = JSON.parse(localStorage.getItem("user") as string);
-      setUser({ ..._user });
-      setLoading(true);
-      console.log(localStorage.getItem("user"));
+    if (localStorage.getItem("saTokenInfo")) {
+      const _saTokenInfo = JSON.parse(
+        localStorage.getItem("saTokenInfo") as string
+      );
+      setSaTokenInfo({ ..._saTokenInfo });
+      console.log(localStorage.getItem("saTokenInfo"));
+      return false;
     }
+    return true;
   };
 
   useEffect(() => {
-    readUserInfoFromLocalStorage();
+    (async () => {
+      try {
+        const res = await usersControllerApi.isLogin();
+        const { statusCodeValue, data }: any = res.data;
+        console.log(statusCodeValue, data);
+        if (statusCodeValue == 200) {
+          setIsLogin(data);
+          readUserInfoFromLocalStorage();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+    //
   }, []);
 
-  useEffect(() => {
-    //console.log(localStorage.getItem("user"))
-    readUserInfoFromLocalStorage();
+  //console.log(isLogin);
 
-    if (!loading && user && !location.pathname.startsWith("/login")) {
+  useEffect(() => {
+    // (async () => {
+    //   try {
+    //     const res = await usersControllerApi.isLogin();
+    //     const { statusCodeValue, data }: any = res.data;
+    //     console.log(statusCodeValue, data);
+    //     if (statusCodeValue == 200) {
+    //       setIsLogin(data);
+    //       readUserInfoFromLocalStorage();
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // })();
+
+    const validResult = readUserInfoFromLocalStorage();
+
+    //console.log("(!isLogin || validResult)", !isLogin, validResult);
+
+    if (!isLogin && validResult && !location.pathname.startsWith("/login")) {
       // 如果未登录，可以渲染一个提示信息，或者重定向到登录页面
       navigate(`/login?redireact=${location.pathname}`); // 或者 <Redirect to="/login" />; (如果使用 react-router)
     }
@@ -58,10 +92,10 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   // 传递给子组件的值
   const value = {
-    loading, // 添加 loading 状态
-    setLoading,
-    user,
-    setUser,
+    isLogin, // 添加 loading 状态
+    setIsLogin,
+    saTokenInfo,
+    setSaTokenInfo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
