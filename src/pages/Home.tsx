@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import { Link } from "react-router";
 import UpdatedForm from "../components/UpdatedForm";
 import CreatedForm from "../components/CreatedForm";
-import { BiUser } from "../openapi";
 import { biUserControllerApi } from "../services/request";
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -42,7 +41,7 @@ const Home = () => {
     setIsCreateModalOpen(false);
   };
 
-  const showUpdatedModal = (record: BiUser) => {
+  const showUpdatedModal = (record: Users) => {
     setIsUpdatedModalOpen(true);
     setRecord(record);
   };
@@ -55,7 +54,7 @@ const Home = () => {
     setIsUpdatedModalOpen(false);
   };
 
-  const columns: ProColumns<BiUser>[] = [
+  const columns: ProColumns<Users>[] = [
     {
       dataIndex: "index",
       valueType: "indexBorder",
@@ -106,7 +105,7 @@ const Home = () => {
   ];
 
   return (
-    <ProTable<BiUser>
+    <ProTable<Users>
       columns={columns}
       actionRef={actionRef}
       cardBordered
