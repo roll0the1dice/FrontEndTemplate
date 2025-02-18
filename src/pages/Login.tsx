@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams  } from 'react-router'; // 假设你使用了 React Router
 import { AuthContext } from '../components/AuthProvider';
 import { usersControllerApi } from '../services/request';
-import { ApiResponseSaTokenInfo, SaTokenInfo } from '../openapi';
+import { ApiResponseSaTokenInfo } from '../openapi';
 
 const LoginPage = () => {
   const [form] = Form.useForm();

@@ -6,7 +6,8 @@ import { useRef, useState } from "react";
 import { Link } from "react-router";
 import UpdatedForm from "../components/UpdatedForm";
 import CreatedForm from "../components/CreatedForm";
-import { biUserControllerApi } from "../services/request";
+import { Users } from "../openapi";
+import { usersControllerApi } from "../services/request";
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -23,8 +24,8 @@ const Home = () => {
   const actionRef = useRef<ActionType>(null);
   const [isCreatedModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdatedModalOpen, setIsUpdatedModalOpen] = useState(false);
-  const [record, setRecord] = useState<BiUser>({} as BiUser);
-  const [rows, setRows] = useState<BiUser[]>([]);
+  const [record, setRecord] = useState<Users>({} as Users);
+  const [rows, setRows] = useState<Users[]>([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const PageSize = 5;
@@ -62,7 +63,7 @@ const Home = () => {
     },
     {
       title: "用户账号",
-      dataIndex: "userAccount",
+      dataIndex: "username",
       copyable: true,
       formItemProps: {
         rules: [
@@ -74,20 +75,20 @@ const Home = () => {
       },
     },
     {
-      title: "用户名",
-      dataIndex: "userName",
+      title: "邮箱",
+      dataIndex: "email",
       copyable: true,
     },
     {
       title: "创建时间",
-      dataIndex: "createTime",
+      dataIndex: "createdAt",
       valueType: "date",
       sorter: true,
       hideInSearch: true,
     },
     {
       title: "更新时间",
-      dataIndex: "updateTime",
+      dataIndex: "updatedAt",
       valueType: "date",
     },
     {
@@ -111,7 +112,7 @@ const Home = () => {
       cardBordered
       request={async (params, sort, filter) => {
         //console.log(sort, filter);
-        let res = await biUserControllerApi.all1();
+        let res = await usersControllerApi.all();
         const { statusCodeValue, data }: any = res.data;
         if (statusCodeValue === 200) {
           //console.log("data", data.content);

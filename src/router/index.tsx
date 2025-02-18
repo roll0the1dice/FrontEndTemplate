@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route, Link } from "react-router";
 import Home from "../pages/Home";
 import Detail from "../pages/Detail";
 import LoginAndRegister from "../pages/LoginAndRegister";
-import AddChart from "../pages/AddChart";
-import MyChartPage from "../pages/MyChartPage";
 
 const routesConfig = [
   {
@@ -15,16 +13,6 @@ const routesConfig = [
   {    
     path: "/login",
     element: <LoginAndRegister />,
-    exact: true,
-  },
-  {    
-    path: "/add_chart",
-    element: <AddChart />,
-    exact: true,
-  },
-  {
-    path: "/my_chart",
-    element: <MyChartPage />,
     exact: true,
   },
   {

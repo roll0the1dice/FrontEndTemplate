@@ -2,8 +2,7 @@ import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { biUserControllerApi } from "../services/request";
-import { UserRegisterRequestDTO } from "../openapi";
+import { usersControllerApi } from "../services/request";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -12,27 +11,31 @@ const RegisterPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   
 
-  const onFinish = async (values: any) => {
-    const usersRegisterRequest: UserRegisterRequestDTO = {
-      userAccount: values.username,
-      userPassword: values.password,
-      checkUserPassword: values.confirmPassword,
-    };
+  // const onFinish = async (values: any) => {
+  //   const usersRegisterRequest: UserRegisterRequestDTO = {
+  //     userAccount: values.username,
+  //     userPassword: values.password,
+  //     checkUserPassword: values.confirmPassword,
+  //   };
 
-    try {
-      let res = await biUserControllerApi.userRegister(usersRegisterRequest);
-      const { statusCodeValue, data }: any = res.data;
-      console.log(statusCodeValue, data);
-      if (statusCodeValue == 200) {
-        messageApi.success("Register successful!");
-        localStorage.setItem("user", JSON.stringify(data));
+  //   try {
+  //     let res = await usersControllerApi.userRegister(usersRegisterRequest);
+  //     const { statusCodeValue, data }: any = res.data;
+  //     console.log(statusCodeValue, data);
+  //     if (statusCodeValue == 200) {
+  //       messageApi.success("Register successful!");
+  //       localStorage.setItem("user", JSON.stringify(data));
 
-        navigate("/login");
-      }
-    } catch (err) {
-      messageApi.error("Register failed!")
-      console.log("Invalid username or password.");
-    }
+  //       navigate("/login");
+  //     }
+  //   } catch (err) {
+  //     messageApi.error("Register failed!")
+  //     console.log("Invalid username or password.");
+  //   }
+  // };
+
+  const onFinish = () => {
+
   };
 
   const validateConfirmPassword = ({ getFieldValue }: any) => ({
