@@ -38,8 +38,6 @@ function App() {
       <Header style={headerStyle}>
         <Link to="/" style={{marginLeft: 20}}>Home</Link>
         <Link to={`/detail/0`} style={{marginLeft: 20}}>UserInfo</Link>
-        {/* <Link to="/login" style={{marginLeft: 20}}>Login</Link>
-        <Link to="/register" style={{marginLeft: 20}}>Register</Link> */}
       </Header>
       <Content>
         <AppRoutes />

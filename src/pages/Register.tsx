@@ -2,8 +2,8 @@ import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { usersControllerApi } from "../services/request";
-import { UsersRegisterRequest } from "../openapi";
+import { biUserControllerApi } from "../services/request";
+import { UserRegisterRequestDTO } from "../openapi";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -13,14 +13,14 @@ const RegisterPage = () => {
   
 
   const onFinish = async (values: any) => {
-    const usersRegisterRequest: UsersRegisterRequest = {
-      username: values.username,
-      password: values.password,
-      checkPassword: values.confirmPassword,
+    const usersRegisterRequest: UserRegisterRequestDTO = {
+      userAccount: values.username,
+      userPassword: values.password,
+      checkUserPassword: values.confirmPassword,
     };
 
     try {
-      let res = await usersControllerApi.userRegister(usersRegisterRequest);
+      let res = await biUserControllerApi.userRegister(usersRegisterRequest);
       const { statusCodeValue, data }: any = res.data;
       console.log(statusCodeValue, data);
       if (statusCodeValue == 200) {

@@ -14,7 +14,6 @@ const LoginPage = () => {
   const { setIsLogin, setSaTokenInfo } = useContext(AuthContext);
 
   const onFinish = async (values: any) => {
-   
     try {
       let res = await usersControllerApi.doLogin(values.username, values.password);
       const {statusCodeValue, data}: ApiResponseSaTokenInfo = res.data;

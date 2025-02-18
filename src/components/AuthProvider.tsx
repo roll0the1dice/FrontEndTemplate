@@ -60,22 +60,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     //
   }, []);
 
-  //console.log(isLogin);
-
   useEffect(() => {
-    // (async () => {
-    //   try {
-    //     const res = await usersControllerApi.isLogin();
-    //     const { statusCodeValue, data }: any = res.data;
-    //     console.log(statusCodeValue, data);
-    //     if (statusCodeValue == 200) {
-    //       setIsLogin(data);
-    //       readUserInfoFromLocalStorage();
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // })();
 
     const validResult = readUserInfoFromLocalStorage();
 
@@ -87,8 +72,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
     //setHistory([...history, location.pathname]);
   }, [location.pathname]);
-
-  //console.log(history)
 
   // 传递给子组件的值
   const value = {

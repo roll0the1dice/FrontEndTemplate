@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router";
 import Home from "../pages/Home";
-import RegisterPage from "../pages/Register";
-import LoginPage from "../pages/Login";
 import Detail from "../pages/Detail";
 import LoginAndRegister from "../pages/LoginAndRegister";
+import AddChart from "../pages/AddChart";
+import MyChartPage from "../pages/MyChartPage";
 
 const routesConfig = [
   {
@@ -17,16 +17,16 @@ const routesConfig = [
     element: <LoginAndRegister />,
     exact: true,
   },
-  // {    
-  //   path: "/login",
-  //   element: <LoginPage />,
-  //   exact: true,
-  // },
-  // {
-  //   path: "/register",
-  //   element: <RegisterPage />,
-  //   exact: true,
-  // },
+  {    
+    path: "/add_chart",
+    element: <AddChart />,
+    exact: true,
+  },
+  {
+    path: "/my_chart",
+    element: <MyChartPage />,
+    exact: true,
+  },
   {
     path: "/detail/:id",
     element: <Detail />,

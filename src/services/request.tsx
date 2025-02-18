@@ -26,13 +26,9 @@ function getCongiguration() {
   return configuration;
 }
 
-// const usersControllerApi = () => {
-//   const configuration = getCongiguration();
 
-//   return new UsersControllerApi(configuration);
-// };
 const configuration = getCongiguration();
 
-const usersControllerApi = new UsersControllerApi(configuration);
+const usersControllerApi =  new UsersControllerApi(configuration);
 
 export { usersControllerApi };
