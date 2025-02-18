@@ -1,4 +1,4 @@
-import { Avatar, Card, List, message } from "antd";
+import { Avatar, Card, List, message, Result } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { chartControllerApi } from "../services/request";
@@ -10,12 +10,12 @@ import {
 } from "../openapi";
 import Search from "antd/es/input/Search";
 import { AuthContext } from "../components/AuthProvider";
-
+import Item from "antd/es/list/Item";
 
 type searchParamsType = {
   current: number;
   pageSize: number;
-}
+};
 
 /**
  * 我的图表页面
@@ -24,12 +24,13 @@ type searchParamsType = {
 const MyChartPage: React.FC = () => {
   const initSearchParams = {
     pageSize: 4,
-    current: 0,
+    current: 1,
   };
   const [loading, setLoading] = useState(true);
   const [chartList, setChartList] = useState<Array<QueryChartVO>>();
   const [total, setTotal] = useState<number>(0);
-  const [searchParams, setSearchParams] = useState<searchParamsType>(initSearchParams);
+  const [searchParams, setSearchParams] =
+    useState<searchParamsType>(initSearchParams);
   const { user } = useContext(AuthContext);
 
   const loadData = async () => {
@@ -40,7 +41,15 @@ const MyChartPage: React.FC = () => {
       console.log(statusCodeValue, data);
       if (statusCodeValue == 200) {
         console.log(data);
-        setChartList(data?.content);
+        const arr = data?.content?.map((item: QueryChartVO) => {
+          const _t = JSON.parse(String(item.genChart));
+          _t.title = undefined;
+
+          item.genChart = JSON.stringify(_t);
+
+          return { ...item };
+        });
+        setChartList(arr);
         setLoading(false);
       }
     } catch (error) {
@@ -93,6 +102,7 @@ const MyChartPage: React.FC = () => {
           */
           onChange: (page, pageSize) => {
             // 当切换分页，在当前搜索条件的基础上，把页数调整为当前的页数
+            console.log(page, pageSize);
             setSearchParams({
               ...searchParams,
               current: page,
@@ -121,14 +131,39 @@ const MyChartPage: React.FC = () => {
                   item.chartType ? "图表类型：" + item.chartType : undefined
                 }
               />
-              {/* 在元素的下方增加16像素的外边距 */}
-              <div style={{ marginBottom: 16 }} />
-              <p>{"分析目标：" + item.goal}</p>
-              {/* 在元素的下方增加16像素的外边距 */}
-              <div style={{ marginBottom: 16 }} />
-              <ReactECharts
-                option={item.genChart && JSON.parse(item.genChart)}
-              />
+              <>
+                {item.status === "wait" && (
+                  <>
+                    <Result
+                      status="warning"
+                      title="待生成"
+                      subTitle={
+                        item.execMessage ?? "当前图表生成队列繁忙，请耐心等候"
+                      }
+                    />
+                  </>
+                )}
+                {item.status === "running" && (
+                  <>
+                    <Result status="info" title="图表生成中" />
+                  </>
+                )}
+              </>
+              {item.status === "succeed" && (
+                <>
+                  <div style={{ marginBottom: 16 }} />
+                  <p>{"分析目标：" + item.goal}</p>
+                  <div style={{ marginBottom: 16 }} />
+                  <ReactECharts
+                    option={item.genChart && JSON.parse(item.genChart)}
+                  />
+                </>
+              )}
+              {item.status === "failed" && (
+                <>
+                  <Result status="error" title="图表生成失败" />
+                </>
+              )}
             </Card>
           </List.Item>
         )}

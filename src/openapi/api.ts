@@ -319,6 +319,12 @@ export interface Chart {
      * @memberof Chart
      */
     'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Chart
+     */
+    'status'?: string;
 }
 /**
  * 
@@ -661,6 +667,18 @@ export interface QueryChartVO {
      * @memberof QueryChartVO
      */
     'genResult'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'status'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryChartVO
+     */
+    'execMessage'?: string;
 }
 /**
  * 
@@ -1488,6 +1506,59 @@ export const ChartControllerApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @param {string} [name] 
+         * @param {string} [goal] 
+         * @param {File} [multipartFile] 
+         * @param {string} [chartType] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        genChartByAiWithAsyncMq: async (name?: string, goal?: string, multipartFile?: File, chartType?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/chart/genMq`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (goal !== undefined) { 
+                localVarFormParams.append('goal', goal as any);
+            }
+    
+            if (multipartFile !== undefined) { 
+                localVarFormParams.append('multipartFile', multipartFile as any);
+            }
+    
+            if (chartType !== undefined) { 
+                localVarFormParams.append('chartType', chartType as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -1661,6 +1732,21 @@ export const ChartControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} [name] 
+         * @param {string} [goal] 
+         * @param {File} [multipartFile] 
+         * @param {string} [chartType] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async genChartByAiWithAsyncMq(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseGenChartByAiResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.genChartByAiWithAsyncMq(name, goal, multipartFile, chartType, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChartControllerApi.genChartByAiWithAsyncMq']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -1749,6 +1835,18 @@ export const ChartControllerApiFactory = function (configuration?: Configuration
         },
         /**
          * 
+         * @param {string} [name] 
+         * @param {string} [goal] 
+         * @param {File} [multipartFile] 
+         * @param {string} [chartType] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        genChartByAiWithAsyncMq(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseGenChartByAiResult> {
+            return localVarFp.genChartByAiWithAsyncMq(name, goal, multipartFile, chartType, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -1832,6 +1930,20 @@ export class ChartControllerApi extends BaseAPI {
      */
     public genChartByAi(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig) {
         return ChartControllerApiFp(this.configuration).genChartByAi(name, goal, multipartFile, chartType, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} [name] 
+     * @param {string} [goal] 
+     * @param {File} [multipartFile] 
+     * @param {string} [chartType] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChartControllerApi
+     */
+    public genChartByAiWithAsyncMq(name?: string, goal?: string, multipartFile?: File, chartType?: string, options?: RawAxiosRequestConfig) {
+        return ChartControllerApiFp(this.configuration).genChartByAiWithAsyncMq(name, goal, multipartFile, chartType, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

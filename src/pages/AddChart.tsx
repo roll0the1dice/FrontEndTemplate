@@ -1,4 +1,4 @@
-import { Button, Card, Col, Divider, Form, Input, Row, Select, Space, Upload } from "antd";
+import { Button, Card, Col, Divider, Form, Input, message, Row, Select, Space, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
@@ -46,6 +46,8 @@ export default function AddChart() {
   const [type, setType] = useState<string>("account");
   const [analysisData, setAnalysisData] = useState<string>();
   const [options, setOptions] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {});
 
@@ -53,7 +55,7 @@ export default function AddChart() {
     (async () => {
       try {
         console.log('chartType', values.selchartTypeect);
-        const res = await chartControllerApi.genChartByAi(
+        const res = await chartControllerApi.genChartByAiWithAsyncMq(
           values.name,
           values.goal,
           values.multipartFile,
@@ -73,6 +75,8 @@ export default function AddChart() {
           // console.log(JSON.parse(genChart));
           setOptions(JSON.parse(genChart));
           setAnalysisData(genResult);
+          setLoading(false);
+          messageApi.info("图表正在为您生成中，请到个人图表页面查看");
           //console.log(genResult);
         }
       } catch (error) {
@@ -87,6 +91,8 @@ export default function AddChart() {
   };
 
   return (
+    <>
+    {contextHolder}
     <div id="AddChart">
       <Row gutter={24}>
         <Col span={12}>
@@ -161,5 +167,6 @@ export default function AddChart() {
         </Col>
       </Row>
     </div>
+    </>
   );
 }
