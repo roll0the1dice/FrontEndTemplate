@@ -56,6 +56,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         }
       } catch (error) {
         console.log(error);
+        localStorage.removeItem("saTokenInfo");
       }
     })();
     //
@@ -73,7 +74,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       navigate(`/login?redireact=${location.pathname}`); // 或者 <Redirect to="/login" />; (如果使用 react-router)
     }
     //setHistory([...history, location.pathname]);
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
 
   // 传递给子组件的值
   const value = {

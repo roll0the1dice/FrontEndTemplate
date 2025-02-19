@@ -4,8 +4,9 @@ import { useParams } from "react-router";
 import { AuthContext } from "../components/AuthProvider";
 import { Users } from "../openapi";
 import { usersControllerApi } from "../services/request";
+import WithAuth from "../components/WithAuth";
 
-export default function Detail() {
+const Detail = () => {
   const { id } = useParams();
   const [userDetail, setUserDetail] = useState<Users>({} as Users);
   const { saTokenInfo } = useContext(AuthContext);
@@ -62,3 +63,8 @@ export default function Detail() {
     </Descriptions>
   );
 }
+
+
+const DetailWithAuth = WithAuth(Detail);
+
+export default DetailWithAuth;

@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Link } from "react-router";
 import Home from "../pages/Home";
 import Detail from "../pages/Detail";
 import LoginAndRegister from "../pages/LoginAndRegister";
+import NoAuth from "../pages/NoAuth";
+import withAuth from "../components/WithAuth";
+import DetailWithAuth from "../pages/Detail";
 
 const routesConfig = [
   {
@@ -17,7 +20,12 @@ const routesConfig = [
   },
   {
     path: "/detail/:id",
-    element: <Detail />,
+    element: <DetailWithAuth />,
+    exact: true,
+  },
+  {
+    path: "/noauth",
+    element: <NoAuth />,
     exact: true,
   }
 ];
